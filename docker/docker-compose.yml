@@ -1,0 +1,30 @@
+#este docker-compose va a levantar dos contenedores, el primero es el adminer/Dockerfile en el puerto 8080 y el segundo es el mysql/Dockerfile en el puerto 3306
+services:
+  bd-mysql:
+    build: ./ejemploBD #ruta donde se encuentra el Dockerfile
+    ports:
+      - "3306:3306"
+    
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    
+    
+
+  service-adminer:
+    build: ./Adminer
+    ports:
+      - "8080:8080"
+
+
+#teniendo en cuenta el orden y la forma del codigo ejecutamos docker-compose up levantando de esta forma los dos contenedores
+#y abrimos el localhost:8080 para ver la base de datos
+#como parte del ejercicio agregamos postgresql
+#y volvemos a ejecutar docker-compose up, ahora tenemos dos bases de datos en el localhost:8080 

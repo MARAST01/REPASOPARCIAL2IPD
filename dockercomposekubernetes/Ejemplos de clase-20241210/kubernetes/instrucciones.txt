@@ -1,0 +1,55 @@
+lo primero es ejecutar el minikube delete
+y luego minikube start
+
+al ejecutar docker ps sale el minikube
+
+
+Montar el directorio
+minikube mount "$(pwd)/app":/app &
+el mount es como montarle una carpeta y que apunte a la carpeta del proyecto.
+
+
+Aplicar los manifiestos
+Crea los recursos: Ejecuta los siguientes comandos en el orden indicado:
+
+kubectl apply -f mysql-service.yaml
+kubectl apply -f mysql-statefulset.yaml
+kubectl apply -f app-service.yaml
+kubectl apply -f app-deployment.yaml
+kubectl apply -f nginx-config.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-service.yaml
+
+
+Verifica que los recursos se hayan creado correctamente:
+kubectl get pods
+kubectl get services
+
+
+Obtén la URL del servicio Nginx (NodePort):
+minikube service nginx-service
+
+
+Prueba las réplicas
+Verifica el balanceo de carga entre réplicas de Node.js:
+Obtén el nombre de los pods de la aplicación:
+
+kubectl get pods -l app=app
+
+
+Usa kubectl port-forward para redirigir el puerto 3000 de un pod a tu máquina:
+kubectl port-forward <nombre-del-pod> 3000:3000
+O el puerto 80 de Nginx:
+kubectl port-forward <nombre-del-pod> 8080:80
+
+Accede a http://localhost:3000. Repite para cada pod para verificar que responde de manera independiente.
+
+Paso 4: Simula una falla y verifica réplicas
+Elimina uno de los pods:
+
+
+kubectl delete pod <nombre-del-pod>
+
+Verifica que Kubernetes crea automáticamente un nuevo pod para mantener el número de réplicas:
+
+kubectl get pods -l app=app

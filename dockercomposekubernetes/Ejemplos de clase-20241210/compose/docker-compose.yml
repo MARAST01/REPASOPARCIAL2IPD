@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:16
+    working_dir: /usr/src/app
+    volumes:
+      - ./app:/usr/src/app
+      #se usan volumenes que es una ventaja de docker-compose
+      #el ./app: es la carpeta del host
+      #y el /usr/src/app es la carpeta del contenedor
+    ports:
+      - "3000:3000"
+      #la primera direccion es la del equipo y la siguiente es la del contenedor
+    command: sh -c "npm install && npm start"
+    #se dice lo que se va a ejecutar
+    depends_on:
+      - db
+      #se dice que depende de la base de datos
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      #se guarda en el disco local
+
+  nginx:
+    image: nginx:alpine
+    #similar al apache server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      #vamos a coger el nginx.con y lo vamos a mandar a la carpeta /etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      #depende de la aplicacion
+      
+
+volumes:
+  db_data:
+
+#vamos a ver el index.js

@@ -1,0 +1,46 @@
+Asegúrate de que el Dockerfile, index.js y package.json estén en el mismo directorio.
+
+Construye la imagen de Docker en la terminal correcta, en este caso en la carpeta docker:
+
+docker build -t node-mysql-app . para el caso del ejemplo se uso adarules
+para revisar si el build se realizo bien se ejecuta: docker image ls
+
+
+Ejecuta el contenedor:
+cardel uso el siguiente comando para el video
+docker run -d --name adacitosito -p 8080:3000 -p 3306:3306 adarules
+el -d es para que quede en segundo plano y no nos bloquee la consola
+el indicativo de que esta corriendo es el hash que arroja como resultado
+y para ver que esta corriendo se usa docker ps o docker ps -a
+el -a muestra tambien los que fallaron y lo muestra en status
+
+
+y este es el que venia por default
+docker run -p 3000:3000 -p 3306:3306 node-mysql-app
+
+ahora en el navegador abrimos localhost:8080 diciendo en el caso del ejemplo cannot GET / 
+eso lo dice por el servicio de api-rest
+y con en el navegador localhost:8080/clients salen los clientes de la DB
+hay otras rutas en el notion
+
+
+
+Prueba la aplicación:
+
+Visita http://localhost:3000/clients para obtener todos los clientes.
+Visita http://localhost:3000/invoices/1 para obtener las facturas del cliente con ID 1.
+
+pero la limitacion es que no deja hacer orquestaciones
+
+
+
+DOCKER COMPOSE
+nos permite administrar varios contenedores en un solo paso
+
+vamos a la carpeta compose y ahi abrimos la terminal
+miremos el docker-compose.yml
+
+para levantar los 3 nodos ejecutamos
+docker compose up -d
+    
+y volvemos a abrir los localhost

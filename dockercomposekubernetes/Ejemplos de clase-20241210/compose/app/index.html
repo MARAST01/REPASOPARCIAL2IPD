@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Randomize Name with Date</title>
+  <script>
+    async function handleSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+
+      const response = await fetch('/randomize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      });
+
+      const data = await response.json();
+      document.getElementById('result').textContent = `Resultado aleatorio: ${data.result}`;
+      document.getElementById('date').textContent = `Fecha actual desde la base de datos: ${data.currentTime}`;
+    }
+  </script>
+</head>
+<body>
+  <h1>Randomiza tu nombre y muestra la fecha</h1>
+  <form onsubmit="handleSubmit(event)">
+    <label for="name">Ingresa tu nombre:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Generar Aleatorio</button>
+  </form>
+  <p id="result"></p>
+  <p id="date"></p>
+</body>
+</html>
+

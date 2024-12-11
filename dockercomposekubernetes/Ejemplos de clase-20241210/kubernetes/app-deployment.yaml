@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: node:16
+          workingDir: /usr/src/app
+          command: ["sh", "-c", "npm install && npm start"]
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - mountPath: /usr/src/app
+              name: app-code
+      volumes:
+        - name: app-code
+          hostPath:
+            path: /app
+            type: Directory
+#la diferencia con compose es que hay que hacer un punto de montaje
